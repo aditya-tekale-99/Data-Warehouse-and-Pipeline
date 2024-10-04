@@ -1,7 +1,7 @@
 # data226
 Projects done in Data warehouse and pipeline
 
-### stock_prices_ETL.py
+### [stock_prices_ETL.py](https://github.com/aditya-tekale-99/data226/blob/main/HW5/stock_prices_ETL.py)
 **Description**:
 
 This Airflow DAG performs an ETL (Extract, Transform, Load) process for daily stock price data from Alpha Vantage to Snowflake. The DAG is designed to run daily, retrieving the latest stock prices for Take-Two Interactive (stock symbol: TTWO), transforming the data, and loading it into a Snowflake table for further analysis.
