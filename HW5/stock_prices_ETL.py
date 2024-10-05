@@ -1,3 +1,4 @@
+#importing all the libraries for airflow and python
 from airflow import DAG
 from airflow.models import Variable
 from airflow.decorators import task
@@ -7,11 +8,13 @@ from datetime import datetime
 import requests
 import snowflake.connector
 
+#function to create snowflake connection
 def return_snowflake_conn():
     hook = SnowflakeHook(snowflake_conn_id='snowflake_conn')
     conn = hook.get_conn()
     return conn.cursor()
 
+#extract task to extract data from the API key using variable.get
 @task
 def extract_stock_data():
     api_key = Variable.get("alpha_vantage_api_key")
@@ -22,12 +25,15 @@ def extract_stock_data():
     data = response.json()
     return data["Time Series (Daily)"]
 
+#to transform the data in desired table structure
 @task
 def transform_stock_data(raw_data):
-    transformed_data = []
+    stock_symbol = "TTWO"
+    transformed_data = [] #empty list
     for date, price_info in raw_data.items():
         transformed_data.append({
             'date': date,
+            'symbol': stock_symbol,
             'open': price_info['1. open'],
             'high': price_info['2. high'],
             'low': price_info['3. low'],
@@ -36,13 +42,22 @@ def transform_stock_data(raw_data):
         })
     return transformed_data[:90]  # Only take the last 90 days
 
+#task to load the transformed data in snowflake
 @task
 def load_to_snowflake(cur, data):
     try:
         cur.execute("BEGIN;")
+        cur.execute("USE WAREHOUSE XSMALL;")
+        cur.execute("CREATE OR REPLACE DATABASE stock;")
+        cur.execute("USE DATABASE stock;")
+        cur.execute("CREATE OR REPLACE SCHEMA raw_data;")
+        cur.execute("USE SCHEMA raw_data;")
+        
+        # creating table
         cur.execute("""
-            CREATE OR REPLACE TABLE raw_data.stock_prices (
+            CREATE OR REPLACE TABLE stock.raw_data.stock_prices (
                 date DATE PRIMARY KEY,
+                symbol STRING,
                 open FLOAT,
                 high FLOAT,
                 low FLOAT,
@@ -53,8 +68,8 @@ def load_to_snowflake(cur, data):
         
         for record in data:
             sql = f"""
-                INSERT INTO raw_data.stock_prices (date, open, high, low, close, volume)
-                VALUES ('{record['date']}', {record['open']}, {record['high']}, {record['low']}, {record['close']}, {record['volume']});
+                INSERT INTO stock.raw_data.stock_prices (date, symbol, open, high, low, close, volume)
+                VALUES ('{record['date']}', '{record['symbol']}', {record['open']}, {record['high']}, {record['low']}, {record['close']}, {record['volume']});
             """
             cur.execute(sql)
         
@@ -64,8 +79,8 @@ def load_to_snowflake(cur, data):
         raise e
 
 with DAG(
-    dag_id='stock_price_etl',
-    start_date=datetime(2024, 9, 30),
+    dag_id='stock_etl',
+    start_date=datetime(2024, 10, 3),
     schedule_interval='@daily',
     catchup=False,
     tags=['stock_prices', 'ETL']
