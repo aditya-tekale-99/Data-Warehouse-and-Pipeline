@@ -15,7 +15,6 @@ This Airflow DAG performs an ETL (Extract, Transform, Load) process for daily st
 
 **DAG Configuration:**
 - The DAG is scheduled to run daily (@daily).
-- It begins execution from September 30, 2024 (start_date=datetime(2024, 9, 30)).
+- It begins execution from October 3, 2024 (start_date=datetime(2024, 10, 3)).
 - No backfill or catchup (catchup=False).
 - Tagged with stock_prices and ETL for better organization.
-
