@@ -58,10 +58,10 @@ def load(d, symbol, target_table):
     cur = return_snowflake_conn()
 
     try:
-        cur.execute("CREATE DATABASE IF NOT EXISTS hw6;")
-        cur.execute("USE DATABASE hw6;")
+        cur.execute("CREATE DATABASE IF NOT EXISTS finance;")
+        cur.execute("USE DATABASE finance;")
         cur.execute("CREATE SCHEMA IF NOT EXISTS raw_data;")
-        cur.execute("USE SCHEMA hw6.raw_data;")
+        cur.execute("USE SCHEMA finance.raw_data;")
         cur.execute(f"""CREATE TABLE IF NOT EXISTS {target_table} (
             date date, open float, close float, high float, low float, volume int, symbol varchar 
         )""")
@@ -79,13 +79,13 @@ def load(d, symbol, target_table):
 
 
 with DAG(
-    dag_id = 'YfinanceToSnowflake_HW6',
+    dag_id = 'dockerYfinance_HW6',
     start_date = datetime(2024,10,10),
     catchup=False,
     tags=['ETL', 'HW6', 'TTWO'],
     schedule = '30 2 * * *'
 ) as dag:
-    target_table = "hw6.raw_data.stock_price"
+    target_table = "finance.raw_data.stock_price"
     symbol = "TTWO"
 
     data = extract(symbol)
