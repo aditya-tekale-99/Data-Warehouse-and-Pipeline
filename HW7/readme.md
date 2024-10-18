@@ -10,7 +10,7 @@ This project contains an Airflow DAG that performs an ETL and ELT operation to c
 - **S3**: The data source, storing CSV files.
 - **Python**: Used to script the DAG and handle connections.
 
-## ETL.py DAG Explanation
+## [ETL.py](https://github.com/aditya-tekale-99/Data-Warehouse-and-Pipeline/blob/main/HW7/ETL.py) DAG Explanation
 - **DAG Name**: `ETLTable`
 - **Tasks**:
    1. **load()**:
