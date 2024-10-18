@@ -23,7 +23,7 @@ This project contains an Airflow DAG that performs an ETL and ELT operation to c
       - Loads the CSV data from S3 into the two Snowflake tables (`user_session_channel` and `session_timestamp`).
    - The tasks are executed in sequence, with `load()` creating the tables first, followed by `load_data()` to load data into them.
 
- ## ELT.py DAG Explanation
+ ## [ELT.py](https://github.com/aditya-tekale-99/Data-Warehouse-and-Pipeline/blob/main/HW7/ELT.py) DAG Explanation
 - **DAG Name**: `ELTTableJoin`
 - **Task**: The task `create_joined_table` connects to Snowflake and performs the following:
    1. Ensures that the `dev1.analytics` schema exists.
