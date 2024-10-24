@@ -14,6 +14,7 @@ def return_snowflake_conn():
 def create_joined_table():
     cur = return_snowflake_conn()
     try:
+        cur.execute("BEGIN;")
         # Use the database and schema
         cur.execute("USE DATABASE dev1;")
         cur.execute("CREATE SCHEMA IF NOT EXISTS dev1.analytics;")
