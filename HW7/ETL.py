@@ -15,6 +15,7 @@ def return_snowflake_conn():
 def load():
     cur = return_snowflake_conn()
     try:
+        cur.execute("BEGIN;")
         cur.execute("CREATE DATABASE IF NOT EXISTS dev1;")
         cur.execute("USE DATABASE dev1;")
         cur.execute("CREATE SCHEMA IF NOT EXISTS raw_data;")
@@ -43,6 +44,7 @@ def load():
 def load_data():
     cur = return_snowflake_conn()
     try:
+        cur.execute("BEGIN;")
         # Create stage and load data from S3 into Snowflake tables
         cur.execute("""
             CREATE OR REPLACE STAGE dev1.raw_data.blob_stage
