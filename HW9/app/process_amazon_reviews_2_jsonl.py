@@ -1,14 +1,16 @@
+#importing python libraries
 import pandas as pd
 import json
 
+# function to combine relevant text features into single text field
 def combine_features(row):
-    """Combine relevant text features into a single text field."""
     try:
         return f"{row['reviews.title']} {row['reviews.text']} {row['categories']}"
     except Exception as e:
         print("Error:", e)
         return ""
 
+# function to process the csv file to jsonl
 def process_amazon_reviews_csv(input_file, output_file):
     reviews = pd.read_csv(input_file)
     # Fill NaN values in relevant columns
@@ -32,4 +34,5 @@ def process_amazon_reviews_csv(input_file, output_file):
     df_result = reviews[['put', 'fields']]
     df_result.to_json(output_file, orient='records', lines=True)
 
+# executing the function with defined parameters
 process_amazon_reviews_csv("amazon_product_reviews.csv", "amazon_reviews.jsonl")
