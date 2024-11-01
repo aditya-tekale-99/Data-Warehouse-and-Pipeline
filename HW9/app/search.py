@@ -50,10 +50,8 @@ def query_products_by_embedding(embedding_vector):
     }
     return app.query(query)
 
-# Replace with the host and port of your local Vespa instance
 app = Vespa(url="http://localhost", port=8080)
 
-# Use any product-related search query
 query = "Kindle Paperwhite"
 
 # Perform keyword search
@@ -66,7 +64,7 @@ df = semantic_search(app, query)
 print("\nSemantic Search Results:")
 print(df.head())
 
-# Get embedding for a specific document (replace with an appropriate doc_id from your dataset)
+# Recommendation based on the product id
 doc_id = "AVpe7AsMilAPnD_xQ78G"
 emb = get_embedding(doc_id)
 if emb:
