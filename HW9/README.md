@@ -9,4 +9,4 @@ This project processes Amazon Product Review data, ingests it into VESPA, and pe
 3. Configure VESPA
 4. Run VESPA as a Docker Container
 5. Ingest the file into VESPA
-6. Run search against VESPA
+6. Run [search]('https://github.com/aditya-tekale-99/Data-Warehouse-and-Pipeline/blob/main/HW9/search.py') against VESPA
