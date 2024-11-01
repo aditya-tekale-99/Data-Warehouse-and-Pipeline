@@ -19,8 +19,8 @@ def process_amazon_reviews_csv(input_file, output_file):
     reviews["text"] = reviews.apply(combine_features, axis=1)
     
     # Select and rename columns for Vespa compatibility
-    reviews = reviews[['id', 'brand', 'text']]
-    reviews.rename(columns={'id': 'doc_id', 'brand': 'title'}, inplace=True)
+    reviews = reviews[['id', 'name', 'text']]
+    reviews.rename(columns={'id': 'doc_id', 'name': 'title'}, inplace=True)
 
     # Create 'fields' column with JSON-like structure for each record
     reviews['fields'] = reviews.apply(lambda row: row.to_dict(), axis=1)
