@@ -1,7 +1,9 @@
+# importing python libraries
 import pandas as pd
 from vespa.application import Vespa
 from vespa.io import VespaResponse, VespaQueryResponse
 
+# function to transform unstructured search result into a DF
 def display_hits_as_df(response: VespaQueryResponse, fields) -> pd.DataFrame:
     records = []
     for hit in response.hits:
@@ -11,6 +13,7 @@ def display_hits_as_df(response: VespaQueryResponse, fields) -> pd.DataFrame:
         records.append(record)
     return pd.DataFrame(records)
 
+# function for keyword based search query with BM25 ranking
 def keyword_search(app, search_query):
     query = {
         "yql": "select * from sources * where userQuery() limit 5",
@@ -20,6 +23,7 @@ def keyword_search(app, search_query):
     response = app.query(query)
     return display_hits_as_df(response, ["doc_id", "title"])
 
+# function for semantic search query using nearest neighbor ranking
 def semantic_search(app, search_query):
     query = {
         "yql": "select * from sources * where ({targetHits:100}nearestNeighbor(embedding, e)) limit 5",
@@ -30,6 +34,7 @@ def semantic_search(app, search_query):
     response = app.query(query)
     return display_hits_as_df(response, ["doc_id", "title"])
 
+# function to retrieve the embedding and other fields for a specific document
 def get_embedding(doc_id):
     query = {
         "yql" : f"select doc_id, title, text, embedding from content.doc where doc_id contains '{doc_id}'",
@@ -41,6 +46,7 @@ def get_embedding(doc_id):
         return result.hits[0]
     return None
 
+# function to build a query for recommendations based on embedding similarity.
 def query_products_by_embedding(embedding_vector):
     query = {
         'hits': 5,
@@ -50,8 +56,10 @@ def query_products_by_embedding(embedding_vector):
     }
     return app.query(query)
 
+# vespa config
 app = Vespa(url="http://localhost", port=8080)
 
+# query to look in doc
 query = "Kindle Paperwhite"
 
 # Perform keyword search
