@@ -1,6 +1,6 @@
-Download TMDB data
-Process TMDB data and generate an input file to VESPA
-Configure VESPA
-Run VESPA as a Docker Container
-Ingest the file into VESPA
-Run search against VESPA
+1. Download Amazon Product Review Data
+2. Process Product Review data and generate an input file to VESPA
+3. Configure VESPA
+4. Run VESPA as a Docker Container
+5. Ingest the file into VESPA
+6. Run search against VESPA
