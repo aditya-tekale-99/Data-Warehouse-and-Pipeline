@@ -32,6 +32,4 @@ def process_amazon_reviews_csv(input_file, output_file):
     df_result = reviews[['put', 'fields']]
     df_result.to_json(output_file, orient='records', lines=True)
 
-# Example usage:
 process_amazon_reviews_csv("amazon_product_reviews.csv", "amazon_reviews.jsonl")
-
