@@ -10,16 +10,6 @@ def combine_features(row):
         return ""
 
 def process_amazon_reviews_csv(input_file, output_file):
-    """
-    Processes an Amazon product reviews CSV file to create a Vespa-compatible JSONL format.
-
-    Args:
-        input_file (str): Path to the input CSV file.
-        output_file (str): Path to the output JSONL file.
-
-    Returns:
-        None. Writes the processed data to a JSONL file.
-    """
     reviews = pd.read_csv(input_file)
     # Fill NaN values in relevant columns
     for column in ['reviews.title', 'reviews.text', 'categories']:
